@@ -146,7 +146,7 @@ function VehicleMap() {
         <div className="flex gap-2">
           <button
             onClick={togglePlay}
-            className="flex-1 px-6 py-3 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+            className="flex-[2] px-6 py-3 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
             style={{ 
               background: isPlaying 
                 ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' 
@@ -157,7 +157,7 @@ function VehicleMap() {
           </button>
           <button
             onClick={resetSimulation}
-            className="px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-bold rounded-xl hover:from-gray-200 hover:to-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95 border border-gray-300"
+            className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-bold rounded-xl hover:from-gray-200 hover:to-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95 border border-gray-300"
           >
             ↺ Reset
           </button>
