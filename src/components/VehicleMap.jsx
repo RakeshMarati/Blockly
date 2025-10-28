@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -13,6 +13,9 @@ const vehicleIcon = L.divIcon({
 
 function VehicleMap() {
   const [routeData, setRouteData] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -32,6 +35,25 @@ function VehicleMap() {
     };
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (isPlaying && routeData.length > 0 && currentIndex < routeData.length - 1) {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex(prevIndex => prevIndex + 1);
+      }, 2000);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [isPlaying, currentIndex, routeData]);
+
+  const currentPosition = routeData[currentIndex] || routeData[0];
+
+  const togglePlay = () => setIsPlaying(!isPlaying);
+  
+  const resetSimulation = () => {
+    setIsPlaying(false);
+    setCurrentIndex(0);
+  };
 
   const fullRouteCoords = routeData.map(p => [p.lat, p.lng]);
 
@@ -54,10 +76,23 @@ function VehicleMap() {
             positions={fullRouteCoords}
           />
         )}
+
+        {routeData.length > 0 && currentIndex > 0 && (
+          <Polyline
+            pathOptions={{ color: 'red', weight: 5, opacity: 0.8 }}
+            positions={routeData.slice(0, currentIndex + 1).map(p => [p.lat, p.lng])}
+          />
+        )}
+
+        {currentPosition && (
+          <Marker
+            position={[currentPosition.lat, currentPosition.lng]}
+            icon={vehicleIcon}
+          />
+        )}
       </MapContainer>
     </div>
   );
 }
 
 export default VehicleMap;
-
