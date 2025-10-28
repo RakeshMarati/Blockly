@@ -96,7 +96,7 @@ function VehicleMap() {
         )}
       </MapContainer>
 
-      <div className="absolute top-4 right-4 z-[1000] bg-white shadow-2xl rounded-lg p-5 w-full max-w-xs border border-gray-300">
+      <div className="absolute top-4 right-4 z-[1000] bg-white shadow-2xl rounded-lg p-6 w-full max-w-md border border-gray-300">
         <div className="flex items-center gap-2 mb-4 border-b pb-3">
           <div className="bg-red-500 p-2 rounded-lg">
             <span className="text-xl">🚗</span>
