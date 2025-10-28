@@ -157,7 +157,7 @@ function VehicleMap() {
             onClick={resetSimulation}
             className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all duration-200"
           >
-            ↺
+            ↺ Reset
           </button>
         </div>
       </div>
