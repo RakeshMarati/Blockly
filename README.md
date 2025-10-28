@@ -27,7 +27,7 @@ A real-time vehicle tracking application built with React and Leaflet that simul
 
 ## 🚀 Live Demo
 
-Visit: [https://blockly-navy.vercel.app/](https://blockly-navy.vercel.app/)
+Visit: [https://blockly-nu-woad.vercel.app/](https://blockly-nu-woad.vercel.app/)
 
 ## 📦 Installation
 
