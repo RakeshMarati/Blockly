@@ -7,9 +7,10 @@ import { calculateSpeedKmH } from '../utils/geo';
 const INITIAL_CENTER = [17.385044, 78.486671];
 
 const vehicleIcon = L.divIcon({
-  className: 'text-2xl',
-  html: '<span class="text-red-600">🚗</span>',
-  iconSize: [24, 24]
+  className: 'custom-vehicle-icon',
+  html: '<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 3px solid white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">🚗</div>',
+  iconSize: [32, 32],
+  iconAnchor: [16, 16]
 });
 
 function VehicleMap() {
@@ -58,6 +59,7 @@ function VehicleMap() {
 
   const fullRouteCoords = routeData.map(p => [p.lat, p.lng]);
   const speed = calculateSpeedKmH(currentIndex, routeData);
+  const progress = routeData.length > 0 ? ((currentIndex / (routeData.length - 1)) * 100).toFixed(1) : 0;
 
   return (
     <div className="h-screen w-full relative">
@@ -74,14 +76,14 @@ function VehicleMap() {
         
         {routeData.length > 0 && (
           <Polyline
-            pathOptions={{ color: 'gray', weight: 3, opacity: 0.5 }}
+            pathOptions={{ color: '#6b7280', weight: 4, opacity: 0.4, dashArray: '10, 10' }}
             positions={fullRouteCoords}
           />
         )}
 
         {routeData.length > 0 && currentIndex > 0 && (
           <Polyline
-            pathOptions={{ color: 'red', weight: 5, opacity: 0.8 }}
+            pathOptions={{ color: '#3b82f6', weight: 6, opacity: 1 }}
             positions={routeData.slice(0, currentIndex + 1).map(p => [p.lat, p.lng])}
           />
         )}
@@ -94,37 +96,70 @@ function VehicleMap() {
         )}
       </MapContainer>
 
-      <div className="absolute top-4 right-4 z-[1000] p-4 bg-white shadow-xl rounded-lg w-full max-w-xs md:max-w-sm">
-        <h2 className="text-lg font-bold mb-3">Vehicle Status</h2>
-        <div className="space-y-1 text-sm">
-          <p>
-            Coordinate: <span className="font-mono text-blue-600">
-              {currentPosition?.lat?.toFixed(6)}, {currentPosition?.lng?.toFixed(6)}
-            </span>
-          </p>
-          <p>
-            Timestamp: <span className="font-medium text-gray-700">
-              {currentPosition?.timestamp ? new Date(currentPosition.timestamp).toLocaleTimeString() : 'N/A'}
-            </span>
-          </p>
-          <p>
-            Speed: <span className="font-medium text-gray-700">{speed} km/h</span>
-          </p>
+      <div className="absolute top-4 right-4 z-[1000] bg-gradient-to-br from-white to-gray-50 shadow-2xl rounded-2xl p-6 w-full max-w-sm border border-gray-200 backdrop-blur-sm">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
+            <span className="text-2xl">🚗</span>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800">Vehicle Status</h2>
+            <p className="text-xs text-gray-500">Live tracking active</p>
+          </div>
         </div>
 
-        <div className="mt-4 flex gap-2">
+        <div className="space-y-3 text-sm mb-5">
+          <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+            <p className="text-xs text-gray-500 mb-1">Current Location</p>
+            <p className="font-mono text-blue-700 font-semibold">
+              {currentPosition?.lat?.toFixed(6)}, {currentPosition?.lng?.toFixed(6)}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-2">
+            <div className="bg-purple-50 p-3 rounded-lg border border-purple-100">
+              <p className="text-xs text-gray-500 mb-1">Timestamp</p>
+              <p className="font-semibold text-purple-700">
+                {currentPosition?.timestamp ? new Date(currentPosition.timestamp).toLocaleTimeString() : 'N/A'}
+              </p>
+            </div>
+            
+            <div className="bg-green-50 p-3 rounded-lg border border-green-100">
+              <p className="text-xs text-gray-500 mb-1">Speed</p>
+              <p className="font-bold text-green-700 text-lg">{speed} km/h</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+            <div className="flex justify-between items-center mb-1">
+              <p className="text-xs text-gray-500">Progress</p>
+              <p className="text-xs font-semibold text-gray-700">{progress}%</p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-2">
           <button
             onClick={togglePlay}
-            className="flex-1 px-4 py-2 text-white font-semibold rounded-lg transition"
-            style={{ backgroundColor: isPlaying ? '#ef4444' : '#22c55e' }}
+            className="flex-1 px-6 py-3 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+            style={{ 
+              background: isPlaying 
+                ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' 
+                : 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' 
+            }}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? '⏸ Pause' : '▶ Play'}
           </button>
           <button
             onClick={resetSimulation}
-            className="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition"
+            className="px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-bold rounded-xl hover:from-gray-200 hover:to-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95 border border-gray-300"
           >
-            Reset
+            ↺ Reset
           </button>
         </div>
       </div>
