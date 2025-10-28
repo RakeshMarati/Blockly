@@ -96,66 +96,68 @@ function VehicleMap() {
         )}
       </MapContainer>
 
-      <div className="absolute top-4 right-4 z-[1000] bg-white shadow-2xl rounded-lg p-6 w-full max-w-md border border-gray-300">
-        <div className="flex items-center gap-2 mb-4 border-b pb-3">
-          <div className="bg-red-500 p-2 rounded-lg">
-            <span className="text-xl">🚗</span>
+      <div className="absolute top-4 right-4 z-[1000] bg-gradient-to-br from-white to-gray-50 shadow-2xl rounded-2xl p-3 w-[500px] max-w-md h-[230px] border-2 border-red-200 backdrop-blur-sm flex flex-col">
+        <div className="flex items-center gap-2 mb-2 border-b-2 border-red-100 pb-2">
+          <div className="bg-gradient-to-br from-red-500 to-red-600 p-2 rounded-lg shadow-lg">
+            <span className="text-lg">🚗</span>
           </div>
           <div>
             <h2 className="text-lg font-bold text-gray-800">Vehicle Tracker</h2>
-            <p className="text-xs text-gray-500">Live Tracking</p>
+            <p className="text-xs text-red-600 font-medium">Live Tracking Active</p>
           </div>
         </div>
 
-        <div className="space-y-2 text-sm mb-4">
-          <div>
-            <p className="text-xs text-gray-500 mb-1">Location</p>
-            <p className="font-mono text-sm text-gray-800 font-medium">
+        <div className="flex-1 space-y-3 text-base overflow-y-auto">
+          <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 mx-1">
+            <p className="text-sm text-blue-600 font-semibold mb-2">📍 Current Location</p>
+            <p className="font-mono text-sm text-blue-800 font-bold">
               {currentPosition?.lat?.toFixed(6)}, {currentPosition?.lng?.toFixed(6)}
             </p>
           </div>
           
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <p className="text-xs text-gray-500 mb-1">Time</p>
-              <p className="font-semibold text-gray-800">
+          <div className="grid grid-cols-2 gap-3 mx-1">
+            <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
+              <p className="text-sm text-purple-600 font-semibold mb-2">🕐 Time</p>
+              <p className="font-bold text-purple-800 text-sm">
                 {currentPosition?.timestamp ? new Date(currentPosition.timestamp).toLocaleTimeString() : 'N/A'}
               </p>
             </div>
             
-            <div>
-              <p className="text-xs text-gray-500 mb-1">Speed</p>
-              <p className="font-bold text-gray-800 text-base">{speed} km/h</p>
+            <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+              <p className="text-sm text-green-600 font-semibold mb-2">⚡ Speed</p>
+              <p className="font-bold text-green-800 text-base">{speed} km/h</p>
             </div>
           </div>
 
-          <div>
-            <div className="flex justify-between items-center mb-1">
-              <p className="text-xs text-gray-500">Route Progress</p>
-              <p className="text-xs font-semibold text-gray-700">{progress}%</p>
+          <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 mx-1">
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-sm text-gray-600 font-semibold">📊 Route Progress</p>
+              <p className="text-sm font-bold text-gray-800">{progress}%</p>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-gray-300 rounded-full h-2 overflow-hidden">
               <div 
-                className="h-full bg-red-500 transition-all duration-300"
+                className="h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-500 rounded-full"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 pt-2 mx-1">
           <button
             onClick={togglePlay}
-            className="flex-[2] px-4 py-2.5 text-white font-semibold rounded-lg transition-all duration-200 hover:opacity-90"
+            className="flex-[2] px-4 py-2 text-white font-bold text-base rounded-lg transition-all duration-300 hover:scale-105 shadow-lg"
             style={{ 
-              backgroundColor: isPlaying ? '#ef4444' : '#22c55e'
+              background: isPlaying 
+                ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' 
+                : 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' 
             }}
           >
             {isPlaying ? '⏸ Pause' : '▶ Play'}
           </button>
           <button
             onClick={resetSimulation}
-            className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all duration-200"
+            className="flex-1 px-4 py-2 bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 font-bold text-base rounded-lg hover:from-gray-300 hover:to-gray-400 transition-all duration-300 hover:scale-105 shadow-lg border border-gray-400"
           >
             ↺ Reset
           </button>
